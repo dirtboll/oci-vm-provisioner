@@ -197,7 +197,7 @@ if __name__ == "__main__":
         i = 0
         while os.path.exists(".env.bak.%s" % i):
             i += 1
-        shutil.move(".env", f".env.bak.{i}")
+        shutil.copyfile(".env", f".env.bak.{i}")
         set_key(".env", "NAME", name)
         set_key(".env", "OCPU", str(ocpus))
         set_key(".env", "RAM", str(ram))
@@ -213,9 +213,10 @@ if __name__ == "__main__":
         
 
     print_justified(new_settings)
-    confirm = input("Confirm? [Y/n]: ").lower()
-    if confirm == "n":
-        exit("Canceled")
+    if os.getenv("AUTO_YES", "") == "":
+        confirm = input("Confirm? [Y/n]: ").lower()
+        if confirm == "n":
+            exit("Canceled")
 
     print("\nLaunching...")
     instance_detail = get_launch_instance_details(name, compartment.id, availability_domain, shape, image, subnet, ocpus, ram, disk_size, pub_key)
