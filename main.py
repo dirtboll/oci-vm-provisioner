@@ -197,7 +197,8 @@ if __name__ == "__main__":
         i = 0
         while os.path.exists(".env.bak.%s" % i):
             i += 1
-        shutil.copyfile(".env", f".env.bak.{i}")
+        if os.path.exists(".env"):
+            shutil.copyfile(".env", f".env.bak.{i}")
         set_key(".env", "NAME", name)
         set_key(".env", "OCPU", str(ocpus))
         set_key(".env", "RAM", str(ram))

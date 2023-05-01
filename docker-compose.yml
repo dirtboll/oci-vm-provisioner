@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  oci-provisioner:
+    build: 
+      context: .
+    env_file:
+      - .env
+    secrets:
+      - source: oci_config
+        target: ../../root/.oci/config
+        mode: 0440
+      - source: oci_key
+        target: ../../root/.oci/key.pem
+        mode: 0400
+
+# Assuming key_file=~/.oci/key.pem
+secrets:
+  oci_config:
+    file: ~/.oci/config
+  oci_key:
+    file: ~/.oci/key.pem
